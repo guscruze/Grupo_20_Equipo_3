@@ -1,42 +1,37 @@
-import 'package:firebase_database/firebase_database.dart';
-
-
 class Product {
-  String _id;
-  String _name;
-  String _codebar;
-  String _description;
-  String _price;
-  String _stock;
-  String _productImage;
+  late int id;
+  late int idtienda;
+  late String nombre;
+  late String unidad;
+  late double precio;
+  late int cantidad;
 
-  Product(this._id,this._name,this._codebar,this._description,
-      this._price,this._stock,this._productImage);
+  //Product(this.id, this.idtienda, this.nombre, this.unidad, this.precio, this.cantidad);
 
-  Product.map(dynamic obj){
-    this._name = obj['name'];
-    this._codebar = obj['codebar'];
-    this._description = obj['description'];
-    this._price = obj['price'];
-    this._stock = obj['stock'];
-    this._productImage = obj['ProductImage'];
+  Product.fromString(String texto) {
+    var list_pr = texto.split(";");
+    id = int.parse(list_pr[1]);
+    idtienda = int.parse(list_pr[0]);
+    nombre = list_pr[2];
+    unidad = list_pr[3];
+    precio = double.parse(list_pr[4]);
+    cantidad = 0;
   }
 
-  String get id => _id;
-  String get name => _name;
-  String get codebar => _codebar;
-  String get description => _description;
-  String get price => _price;
-  String get stock => _stock;
-  String get productImage => _productImage;
+  Product.fromJson(Map<String, dynamic> json)
+      : id = int.parse(json['id'].toString()),
+        idtienda = int.parse(json['idtienda'].toString()),
+        nombre = json['nombre'],
+        unidad = json['unidad'],
+        precio = double.parse(json['precio'].toString()),
+        cantidad = int.parse(json['cantidad'].toString());
 
-  Product.fromSnapShot(DataSnapshot snapshot){
-    _id = snapshot.key;
-    _name = snapshot.value['name'];
-    _codebar = snapshot.value['codebar'];
-    _description = snapshot.value['description'];
-    _price = snapshot.value['price'];
-    _stock = snapshot.value['stock'];
-    _productImage = snapshot.value['ProductImage'];
-  }
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "idtienda": idtienda,
+        "nombre": nombre,
+        "unidad": unidad,
+        "precio": precio,
+        "cantidad": cantidad,
+      };
 }
